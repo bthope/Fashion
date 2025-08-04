@@ -11,13 +11,21 @@ const ShopContextProvider = (props) => {
   useEffect(() => {
     const savedCart = localStorage.getItem('fashionCart');
     if (savedCart) {
-      setCartItems(JSON.parse(savedCart));
+      try {
+        const parsedCart = JSON.parse(savedCart);
+        setCartItems(parsedCart);
+      } catch (error) {
+        console.error('Error parsing saved cart:', error);
+        localStorage.removeItem('fashionCart');
+      }
     }
   }, []);
 
   // Save cart to localStorage whenever cartItems changes
   useEffect(() => {
-    localStorage.setItem('fashionCart', JSON.stringify(cartItems));
+    if (Object.keys(cartItems).length > 0) {
+      localStorage.setItem('fashionCart', JSON.stringify(cartItems));
+    }
   }, [cartItems]);
 
   const addToCart = (itemId) => {
