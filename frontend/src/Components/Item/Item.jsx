@@ -1,6 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import './Item.css'
+import { ShopContext } from '../../Context/ShopContext'
+
 const Item = (props) => {
+  const { addToCart } = useContext(ShopContext);
+
+  const handleAddToCart = (e) => {
+    e.preventDefault();
+    addToCart(props.id);
+  };
+
   return (
     <div className='item'>
         <img src={props.image} alt="" />
@@ -13,6 +22,9 @@ const Item = (props) => {
                 ${props.old_price}
             </div>
         </div>
+        <button className='add-to-cart-btn' onClick={handleAddToCart}>
+            Thêm vào giỏ
+        </button>
     </div>
   )
 }
